@@ -51,14 +51,14 @@ class FormationRepository extends ServiceEntityRepository
             return $this->createQueryBuilder('f')
                     ->orderBy('f.'.$champ, $ordre)
                     ->getQuery()
-                    ->getResult();
+                    ->getResult();            
         }else{
             return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
                     ->getQuery()
                     ->getResult();            
-        }
+    }
     }
 
     /**
@@ -70,7 +70,7 @@ class FormationRepository extends ServiceEntityRepository
      * @return Formation[]
      */
     public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
+    if($valeur==""){
             return $this->findAll();
         }
         if($table==""){
@@ -88,8 +88,8 @@ class FormationRepository extends ServiceEntityRepository
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->getQuery()
                     ->getResult();                   
-        }       
-    }    
+        } 
+    }
     
     /**
      * Retourne les n formations les plus récentes
