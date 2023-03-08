@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Formation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @extends ServiceEntityRepository<Formation>
@@ -120,15 +120,6 @@ class FormationRepository extends ServiceEntityRepository
                 ->getResult();        
     }
     
-    /**
-     * @Route("/admin/suppr/{id}", name="admin.formation.suppr")
-     * @param Formation $formation
-     * @return Response
-     
-    public function suppr(Formation $formation): Response{
-        $this->formationRepository->remove($formation, true);
-        return $this->redirectToRoute('admin.formation');
-    }
-     */
+    
     
 }

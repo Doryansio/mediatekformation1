@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Formation;
 
 
 /**
@@ -90,6 +91,28 @@ class AdminFormationsController extends AbstractController{
         return $this->render("admin/admin.formations.html.twig", [
             'formation' => $formation
         ]);        
-    }   
+    } 
+    
+    /**
+     * @Route("/admin/suppr/{id}", name="admin.formation.suppr")
+     * @param Formation $formation
+     * @return Response
+    */
+    public function suppr(Formation $formation): Response{
+        $this->formationRepository->remove($formation, true);
+        return $this->redirectToRoute('admin.formations');
+    }
+    
+    /**
+     * @Route("/admin/edit/{id}", name="admin.formation.edit")
+     * @param Formation $formation
+     * @return Response
+    */
+    public function edit(Formation $formation): Response{
+        return $this->render("admin/admin.formation.edit.html.twig", [
+            'formation' => $formation
+        ]);
+    }
+     
 }
 
