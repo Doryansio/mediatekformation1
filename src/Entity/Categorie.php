@@ -23,6 +23,10 @@ class Categorie
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $name;
+    
+    public function __toString() {
+        return $this->name;
+    }
 
     /**
      * @ORM\ManyToMany(targetEntity=Formation::class, mappedBy="categories")
