@@ -1,35 +1,6 @@
-{% extends "baseadmin.html.twig" %}
+{% extends 'baseAdmin.html.twig' %}
 
-{% block body %} 
-    <h2> Detail des formations : </h2>
-        {{ form_start(formFormation) }}
-        <div class="row">
-            <div class="col">             
-                <div class="row">
-                    <div class="col-auto">
-                        {{ form_row(formFormation.publishedAt) }}                                                  
-                    </div>
-                    <div class="col">
-                        {{ form_row(formFormation.title) }}
-                    </div>
-                    <div class="col">
-                        {{ form_row(formFormation.description) }}
-                    </div>
-                    <div class="col">
-                        {{ form_row(formFormation.videoId) }}
-                    </div>
-                </div>
-                    <div class="col">
-                        {{ form_row(formFormation.playlist) }}
-                    </div>
-                <div class="col">
-                        {{ form_row(formFormation.categories) }}
-                </div>
-            </div>
-        </div>
-    {{ form_end(formFormation) }}
-            
-        
-        {{ form_end(formFormation) }}
 
+{% block boody %}
+    <h2>{{ formation.title }}</h2>
 {% endblock %}
