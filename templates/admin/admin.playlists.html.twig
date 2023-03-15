@@ -72,16 +72,15 @@
                             {{ playlists[k].formations|length }}
                         </td>
                         <td>
-                             
+                            <a href="#" class="btn btn-secondary" >Editer</a>
+                            <a href="{{ path('admin.playlists.suppr', {id:playlists[k].id}) }} " class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer {{playlists[k].name}}?');">Supprimer</a>           
                         </td>
                         
                     </tr>
                 
             {% endfor %}
             {% endif %}
-            <td>
-                  <a href="{{ path('admin.playlist.suppr', {id:formation.playlist}) }}" class="btn btn-danger">Supprimer</a>           
-            </td>
+            
              
         </tbody>
     </table>
