@@ -65,7 +65,13 @@
                         </h5>
                     </td>
                     <td class="text-left">
-                        {{ formation.playlist.name }}                  
+                        {% if formation.playlist.name is defined%}
+                                    {{ formation.playlist.name }}
+                                    {% else %}
+                                        <p>
+                                            erreur
+                                        </p>
+                                        {% endif %}                  
                     </td>                    
                     <td class="text-left">
                         {% for categorie in formation.categories %}

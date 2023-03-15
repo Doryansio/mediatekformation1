@@ -2,6 +2,12 @@
 
 {% block body %}
     
+    <p class="text-end">
+        <a href="{{ path('admin.formation.ajout') }}" class="btn btn-primary">
+            Ajouter une nouvelle formation
+        </a>
+    </p>      
+    
     <table class="table table-striped">
         <caption> tableau des formations </caption>
         <thead>
@@ -67,7 +73,13 @@
                         </h5>
                     </td>
                     <td class="text-left">
-                        {{ formation.playlist.name }}                  
+                        {% if formation.playlist.name is defined%}
+                                    {{ formation.playlist.name }}
+                                    {% else %}
+                                        <p>
+                                            erreur
+                                        </p>
+                                        {% endif %}                
                     </td>                    
                     <td class="text-left">
                         {% for categorie in formation.categories %}

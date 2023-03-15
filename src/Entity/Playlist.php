@@ -23,6 +23,10 @@ class Playlist
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $name;
+    
+    public function __toString() {
+        return $this->name;
+    }
 
     /**
      * @ORM\Column(type="text", nullable=true)
