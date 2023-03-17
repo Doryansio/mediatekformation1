@@ -8,6 +8,9 @@
 
 namespace App\Controller\admin;
 
+
+use App\Entity\Playlist;
+use App\Form\PlaylistType;
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
 use App\Repository\PlaylistRepository;
@@ -15,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Playlist;
 
 /**
  * Description of AdminPlaylistController
@@ -116,5 +118,51 @@ class AdminPlaylistController extends AbstractController {
         $this->playlistRepository->remove($playlist, true);
         return $this->redirectToRoute('admin.playlists');
     }
+    
+     /**
+     * @Route("/admin/playlist/{id}", name="admin.playlists.edit")
+     * @param Type $id
+     * @return Response
+    */
+    public function edit($id, Request $request): Response {
+        $playlist = $this->playlistRepository->find($id);
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        
+        $formPlaylist->handleRequest($request);
+        if($formPlaylist->isSubmitted() && $formPlaylist->isValid()){
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute("admin.playlists");
+            
+        }
+        $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
+        $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
+        return $this->render("admin/admin.playlist.ajout.html.twig", [
+            'playlist' => $playlist,
+            'playlistcategories' => $playlistCategories,
+            'playlistformations' => $playlistFormations,
+            'formPlaylist' => $formPlaylist->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/admin/playlist", name="admin.playlist.ajout")
+     * @param Request $request
+     * @return Response
+    */
+    public function ajout(Request $request): Response{
+        $playlist = new Playlist();
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        
+        $formPlaylist->handleRequest($request);
+        if($formPlaylist->isSubmitted()&& $formPlaylist->isValid()){
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute("admin.playlists");
+        }
+        return $this->render("admin/Admin.playlist.ajout.html.twig", [
+            'playlist' => $playlist,
+            'formPlaylist' => $formPlaylist->createView()
+        ]);
+    }
+    
 }
 
