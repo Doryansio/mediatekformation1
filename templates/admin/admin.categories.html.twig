@@ -1,0 +1,45 @@
+{% extends "baseAdmin.html.twig"%}
+{% block body %}
+    <table class="table table-striped">
+        <caption>Tableau des Categories </caption>
+        {% for message in app.flashes('categorie_request') %}
+            <div style="background-color: #df3a01; font-size: 30px; color: white; border-radius: 10px; text-align: center">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <thead>
+            <th class="text-left align-top" scope="col">
+                    <br />
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin.categories.add') }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="name">
+                            <input type="hidden" name="_token" value="{{ csrf_token('add') }}">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                        </div>
+                    </form>                    
+            </th>
+            <th class="text-center align-top" scope="col">
+
+            </th>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ categorie.name }}
+                        </h5>
+                    </td>                                      
+                    <td class="text-center">
+                        <form onsubmit="return confirm('Voulez-vous vraiment supprimer cette categorie ?')" 
+                              method="post" action="{{ path('admin.categories.delete', {id:categorie.id}) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

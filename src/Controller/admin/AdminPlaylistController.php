@@ -114,9 +114,17 @@ class AdminPlaylistController extends AbstractController {
      * @return Response
     */
     public function suppr($id, Request $request): Response{
-        $playlist = $this->playlistRepository->find($id);
-        $this->playlistRepository->remove($playlist, true);
-        return $this->redirectToRoute('admin.playlists');
+        try{
+            if ($this ->isCsrfTokenValid('suppr'. $id, $request -> get('_token'))){
+           $playlist = $this->playlistRepository->find($id);
+           $this->playlistRepository->remove($playlist, true);
+            }
+            return $this->redirectToRoute('admin.playlists');
+        } catch(\Exception $e) {
+            $this->addFlash('playlist_request', 'Impossible de supprimer la playlist car elle contient des formations');
+            return $this->redirectToRoute('admin.playlists');
+        }
+             
     }
     
      /**
