@@ -27,9 +27,8 @@ security:
 
            
     access_control:
-         - { path: ^/admin/formations, roles: ROLE_ADMIN }
-         - { path: ^/admin/playlists, roles: ROLE_ADMIN }
-         - { path: ^/admin/categories, roles: ROLE_ADMIN }
+         - { path: ^/admin, roles: ROLE_ADMIN }
+        
          
         
 

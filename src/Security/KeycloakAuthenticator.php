@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +9,7 @@
 
 namespace App\Security;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -17,29 +19,41 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
+
 /**
- * Description of KeycloakAuthentificator
+ * Description of KeycloakAuthenticator
  *
  * @author Doryan
  */
 class KeycloakAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface{
+    
+    /**
+     * @var clientRegistry
+     */
     private $clientRegistry;
+    
+    /**
+     * @var entityManager
+     */
     private $entityManager;
+    
+    /**
+     * @var router
+     */
     private $router;
     
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router) {
+    public function __construct(ClientRegistry $clientRegistry, 
+            EntityManagerInterface $entityManager, RouterInterface $router){
         $this->clientRegistry = $clientRegistry;
         $this->entityManager = $entityManager;
         $this->router = $router;
-    }
-
-
+    }   
+    
     public function authenticate(Request $request): Passport {
         $client = $this->clientRegistry->getClient('keycloak');
         $accessToken = $this->fetchAccessToken($client);
@@ -68,7 +82,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
                     }
                     //3) le user n'existe pas encore dans la BDD
                     $user = new User();
-                    $user->setKeycloakdId($keycloakUser->getId());
+                    $user->setKeycloakId($keycloakUser->getId());
                     $user->setEmail($keycloakUser->getEmail());
                     $user->setPassword("");
                     $user->setRoles(['ROLE_ADMIN']);
@@ -78,28 +92,23 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
                 })
         );
     }
-        
-    
-
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response {
+    public function onAuthenticationFailure(Request $request,
+            AuthenticationException $exception): ?Response {
         $message = strtr($exception->getMessageKey(), $exception->getMessageData());
         return new Response($message, Response::HTTP_FORBIDDEN);
     }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response {  
+    public function onAuthenticationSuccess(Request $request,
+            TokenInterface $token, string $firewallName): ?Response {
         $targetUrl = $this->router->generate('admin.formations');
         return new RedirectResponse($targetUrl);
     }
-
     public function start(Request $request, AuthenticationException $authException = null): Response {
-         return new RedirectResponse(
+        return new RedirectResponse(
                 '/oauth/login',
                 Response::HTTP_TEMPORARY_REDIRECT
         );
     }
-
     public function supports(Request $request): ?bool {
         return $request->attributes->get('_route') === 'oauth_check';
     }
-
 }

@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace App\Tests\Controller;
+namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Flex\Response;

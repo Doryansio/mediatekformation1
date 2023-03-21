@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace App\Tests\Repository;
+namespace App\Repository;
 
 use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
