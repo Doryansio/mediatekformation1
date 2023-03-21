@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OAuthController extends AbstractController
 {
     /**
-     * @Route("/oauth/login", name="oauth_login")
+     *@Route("/oauth/login", name="oauth_login")
      */
     public function index(ClientRegistry $clientRegistry): RedirectResponse
     {
@@ -19,9 +19,16 @@ class OAuthController extends AbstractController
         
     }
     /**
-     * @Route("/oauth/callback", name="oauth_check")
+     *@Route("/oauth/callback", name="oauth_check")
      */
     public function connectCheckAction(Request $request, ClientRegistry $clientRegistry){
+        
+    }
+    /**
+     * @Route("/logout", name="logout")
+     * 
+     */
+    public function logout(){
         
     }
 }
